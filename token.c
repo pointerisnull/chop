@@ -6,13 +6,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int *tokenize(char *buffer) {
+int *tokenize(char **buffer, int tokc) {
   //debug_print(&buffer, 1);
-  int count = 0;
-  char **lines = split(buffer, DELIMITERS, &count);
   //printf("====SPLIT RESULT====\n\n");
-  debug_print(lines, count);
-  int *res = malloc(count*sizeof(int));
+  //debug_print(buffer, tokc);
+  int *res = malloc(tokc*sizeof(int));
   
   return res;
 }

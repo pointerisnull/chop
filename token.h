@@ -1,53 +1,58 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#define SYMBOL_COUNT 32
-#define KEYWORD_COUNT 32
-#define LITERAL_COUNT 128
-#define CONSTANT_COUNT 1024
-#define IDENTIFIER_COUNT 1024
+#include "config.h"
 
-static char SYMBOLS[SYMBOL_COUNT] = {
-  '\n',
-  ',',
-  '+',
-  '-',
-  '*',
-  '/',
-  '=',
-  '%',
-  '!',
-  '@',
-  '&',
-  '|',
-  '#',
-  '<',
-  '>',
-  '(',
-  ')',
-  '[',
-  ']'
+typedef struct node_t node_t;
+
+struct node_t {
+  char *data;
+  node_t *next;
+  node_t *prev;
+};
+
+static char SYMBOLS[SYMBOL_COUNT][3] = {
+  SYM_NEWLINE,
+  SYM_COMMA,  
+  SYM_PLUS,   
+  SYM_MINUS,  
+  SYM_STAR,   
+  SYM_FSLASH, 
+  SYM_BSLASH,
+  SYM_EQUALS, 
+  SYM_MODULO, 
+  SYM_NOT,    
+  SYM_ADDR,   
+  SYM_PIPE,   
+  SYM_COMMENT,
+  SYM_STRLIT, 
+  SYM_LESS,    
+  SYM_GREATER, 
+  SYM_LPAREN,  
+  SYM_RPAREN,  
+  SYM_LBRACK,  
+  SYM_RBRACK  
 };
 
 static char KEYWORDS[KEYWORD_COUNT][8] = {
-  "NULL",
-  "VOID",
-  "BEGIN",
-  "RETURN",
-  "IMPORT",
-  "IF",
-  "ELSE",
-  "THEN",
-  "FOR",
-  "NEXT", //end of for loop
-  "WHILE",
-  "LOOP", //WEND in basic, end of while
-  "8BIT",
-  "16BIT",
-  "32BIT",
-  "64BIT"
+  KEYWORD_NULL, 
+  KEYWORD_VOID,
+  KEYWORD_BEGIN,
+  KEYWORD_RETURN,
+  KEYWORD_IMPORT,
+  KEYWORD_IF, 
+  KEYWORD_ELSE, 
+  KEYWORD_THEN,  
+  KEYWORD_FOR, 
+  KEYWORD_NEXT,
+  KEYWORD_WHILE,
+  KEYWORD_LOOP,  
+  KEYWORD_i8,  
+  KEYWORD_i16,  
+  KEYWORD_i32,
+  KEYWORD_i64
 };
 
-int *tokenize(char *buffer);
+int *tokenize(char **buffer, int tokc);
 
 #endif

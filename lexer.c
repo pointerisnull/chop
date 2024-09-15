@@ -3,10 +3,9 @@
 #include <stdio.h>
 
 int is_delim(char ch, const char *delimiters);
-void free_split_string(char **result);
 
 char **split(const char *str, const char *delimiters, int *count) {
-  size_t size = 16; // Initial size of the result array
+  size_t size = 64; // Initial size of the result array
   char **result = malloc(size * sizeof(char *));
   if (!result) {
     perror("Failed to allocate memory");
@@ -93,13 +92,13 @@ int is_delim(char ch, const char *delimiters) {
   return 0;
 }
 
-void free_split_string(char **result) {
-  char **ptr = result;
+void free_split_string(char **buffer, int tokc) {
+  char **ptr = buffer;
   while (*ptr) {
     free(*ptr);
     ptr++;
   }
-  free(result);
+  free(buffer); 
 }
 
 void debug_print(char **buffer, int count) {
