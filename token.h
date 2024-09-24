@@ -3,14 +3,6 @@
 
 #include "config.h"
 
-typedef struct node_t node_t;
-
-struct node_t {
-  char *data;
-  node_t *next;
-  node_t *prev;
-};
-
 static char SYMBOLS[SYMBOL_COUNT][3] = {
   SYM_NEWLINE,
   SYM_COMMA,  
@@ -47,6 +39,7 @@ static char KEYWORDS[KEYWORD_COUNT][8] = {
   KEYWORD_NEXT,
   KEYWORD_WHILE,
   KEYWORD_LOOP,  
+  KEYWORD_PRINT,  
   KEYWORD_i8,  
   KEYWORD_i16,  
   KEYWORD_i32,

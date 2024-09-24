@@ -42,6 +42,7 @@
 #define KEYWORD_NEXT    "NEXT" //end of for loop
 #define KEYWORD_WHILE   "WHILE"
 #define KEYWORD_LOOP    "LOOP" //WEND in basic, end of while
+#define KEYWORD_PRINT   "PRINT"
 #define KEYWORD_i8      "BIT8"
 #define KEYWORD_i16     "BIT16"
 #define KEYWORD_i32     "BIT32"

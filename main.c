@@ -3,11 +3,12 @@
 *                               *
 *   -Brendan Haney 2024         *
 \*******************************/
-#define VERSION "pre-alpha"
+#define VERSION "a_0.0.1"
 
 #include "config.h"
 #include "lexer.h"
 #include "token.h"
+#include "table.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -27,16 +28,23 @@ int main(int argc,  char *argv[]) {
     else if (access(argv[1], F_OK | R_OK) == 0) {
       if (argv[1][strlen(argv[1])-1] == '/' && strncmp(argv[1], "/", 2) != 0) 
         argv[1][strlen(argv[1])-1] = '\0'; 
-      //strncpy(current_path, argv[1], strlen(argv[1]));
       char *buffer = read_file(argv[1]);
+      
       int count = 0;
       char **lines = split(buffer, DELIMITERS, &count);
       //printf("%s\n", buffer);
-      debug_print(lines, count);
+      /*table_t literal_table = table_create(LITERAL_COUNT, STRING_TYPE);
+      table_t constant_table = table_create(CONSTANT_COUNT, INT_TYPE);
+      table_t identifier_table = table_create(IDENTIFIER_COUNT, STRING_TYPE);*/
+      //debug_print(lines, count);
       int *res = tokenize(lines, count);
-
+      /*table_print(literal_table);
+      table_print(constant_table);*/
       free(buffer);
       free_split_string(lines, count);
+      /*table_free(&literal_table);
+      table_free(&constant_table);
+      table_free(&identifier_table);*/
     }
     else
       printf("make sure the file path is correct...\n");
