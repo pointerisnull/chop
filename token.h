@@ -2,6 +2,7 @@
 #define TOKEN_H
 
 #include "config.h"
+#include "table.h"
 
 static char SYMBOLS[SYMBOL_COUNT][3] = {
   SYM_NEWLINE,
@@ -46,6 +47,6 @@ static char KEYWORDS[KEYWORD_COUNT][8] = {
   KEYWORD_i64
 };
 
-int *tokenize(char **buffer, int tokc);
+int *tokenize(char **buffer, int tokc, dictionary_t *dict);
 
 #endif

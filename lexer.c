@@ -1,9 +1,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+/*utility function*/
 int is_delim(char ch, const char *delimiters);
-
+/*given a file buffer, return an array of strings that corrispond with each word*/
 char **split(const char *str, const char *delimiters, int *count) {
   size_t size = 64; // Initial size of the result array
   char **result = malloc(size * sizeof(char *));
@@ -79,7 +79,7 @@ char **split(const char *str, const char *delimiters, int *count) {
 
   return result;
 }
-
+/*determines if a character is a delimiter or not*/
 int is_delim(char ch, const char *delimiters) {
   if(ch == '"' || ch == '#') //case for string literals
     return -1;
@@ -91,7 +91,7 @@ int is_delim(char ch, const char *delimiters) {
   }
   return 0;
 }
-
+/*frees the string buffer from memory*/
 void free_split_string(char **buffer, int tokc) {
   char **ptr = buffer;
   while (*ptr) {
@@ -100,7 +100,7 @@ void free_split_string(char **buffer, int tokc) {
   }
   free(buffer); 
 }
-
+/*prints the new split string*/
 void debug_print(char **buffer, int count) {
   int lc = 1;
   printf("%d.)`", lc);

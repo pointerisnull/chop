@@ -28,23 +28,26 @@ int main(int argc,  char *argv[]) {
     else if (access(argv[1], F_OK | R_OK) == 0) {
       if (argv[1][strlen(argv[1])-1] == '/' && strncmp(argv[1], "/", 2) != 0) 
         argv[1][strlen(argv[1])-1] = '\0'; 
+      /*BEGIN MAIN COMPILER CODE*/
       char *buffer = read_file(argv[1]);
       
       int count = 0;
       char **lines = split(buffer, DELIMITERS, &count);
       //printf("%s\n", buffer);
-      /*table_t literal_table = table_create(LITERAL_COUNT, STRING_TYPE);
-      table_t constant_table = table_create(CONSTANT_COUNT, INT_TYPE);
-      table_t identifier_table = table_create(IDENTIFIER_COUNT, STRING_TYPE);*/
       //debug_print(lines, count);
-      int *res = tokenize(lines, count);
-      /*table_print(literal_table);
-      table_print(constant_table);*/
+
+      dictionary_t dictionary = dict_create();
+     
+      int *codes = tokenize(lines, count, &dictionary);
+      
+      for (int i = 0; i < count; i++) {
+        printf("%d ", codes[i]);
+      }
+      printf("\n");
+      
       free(buffer);
+      free(codes);    
       free_split_string(lines, count);
-      /*table_free(&literal_table);
-      table_free(&constant_table);
-      table_free(&identifier_table);*/
     }
     else
       printf("make sure the file path is correct...\n");
@@ -53,7 +56,7 @@ int main(int argc,  char *argv[]) {
   //printf("There is nothing left to do.\n");
   return 0;
 }
-
+/*reads a file from disk and returns it as a string buffer*/
 char *read_file(char *path) {
   FILE *file;
   char *buffer;
@@ -89,4 +92,5 @@ char *read_file(char *path) {
 
   fclose(file);
   return buffer;
+
 }

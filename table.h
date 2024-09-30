@@ -1,8 +1,14 @@
 #ifndef TABLE_H
 #define TABLE_H
 
-#define INT_TYPE 0
-#define STRING_TYPE 1
+#define INT_TYPE      0
+#define STRING_TYPE   1
+
+#define KEYWORD_T     0
+#define SYMBOL_T      1
+#define IDENTIFIER_T  2
+#define CONSTANT_T    3
+#define LITERAL_T     4
 
 typedef struct table_t {
   int type;
@@ -15,15 +21,20 @@ typedef struct table_t {
 typedef struct dictionary_t {
   int keywordc;
   int symbolc;
-  int identifierc;
   int constantc;
   int literalc;
+  int identifierc;
+  int keywordmax;
+  int symbolmax;
+  int constantmax;
+  int literalmax;
+  int identifiermax;
   table_t keyword_table;
   table_t symbol_table;
-  table_t identifier_table;
-  table_t identifier_type_table;
   table_t constant_table;
   table_t literal_table;
+  table_t identifier_table;
+  table_t identifier_type_table;
 
 } dictionary_t;
 
@@ -34,5 +45,8 @@ void table_print(table_t table);
 
 dictionary_t dict_create();
 void dict_print(dictionary_t dict);
+int dict_search(dictionary_t dict, int type, void *content);
+int dict_push(dictionary_t *dict, int type, void *content);
+void dict_free(dictionary_t *dict);
 
 #endif
