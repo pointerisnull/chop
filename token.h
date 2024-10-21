@@ -24,7 +24,14 @@ static char SYMBOLS[SYMBOL_COUNT][3] = {
   SYM_LPAREN,  
   SYM_RPAREN,  
   SYM_LBRACK,  
-  SYM_RBRACK  
+  SYM_RBRACK,
+  SYM_EQUIV,
+  SYM_GEQUIV,
+  SYM_LEQUIV,
+  SYM_PP,    
+  SYM_MM,
+  SYM_PEQUALS,
+  SYM_MEQUALS
 };
 
 static char KEYWORDS[KEYWORD_COUNT][8] = {
@@ -47,6 +54,7 @@ static char KEYWORDS[KEYWORD_COUNT][8] = {
   KEYWORD_i64
 };
 
-int *tokenize(char **buffer, int tokc, dictionary_t *dict);
+int *encode(char **buffer, int *tokc, dictionary_t *dict);
+int classify_token(char *lit);
 
 #endif

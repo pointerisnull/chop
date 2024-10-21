@@ -9,6 +9,7 @@
 #include "lexer.h"
 #include "token.h"
 #include "table.h"
+#include "cono.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -16,45 +17,54 @@
 #include <stdlib.h>
 
 char *read_file(char *path);
+void compile_file(char *buffer);
 
 int main(int argc,  char *argv[]) {
 
   if (argc > 1) {
-    if ((strncmp(argv[1], "-i", 3) == 0))
-      printf("Welcome to the CHOP interpreter!\n>\n");
-    else if (strncmp(argv[1], "-c", 3) == 0) {
-      printf("compiling %s...\n", argv[2]);
+    /*interpret a file*/
+    if ((strncmp(argv[1], "-i", 3) == 0) && access(argv[2], F_OK | R_OK) == 0) {
+      printf("interpreting %s...\n", argv[2]);
+      char *buffer = read_file(argv[2]);
+      free(buffer);
     }
+    /*compile a file*/
     else if (access(argv[1], F_OK | R_OK) == 0) {
-      if (argv[1][strlen(argv[1])-1] == '/' && strncmp(argv[1], "/", 2) != 0) 
-        argv[1][strlen(argv[1])-1] = '\0'; 
       /*BEGIN MAIN COMPILER CODE*/
       char *buffer = read_file(argv[1]);
-      
-      int count = 0;
-      char **lines = split(buffer, DELIMITERS, &count);
-      //printf("%s\n", buffer);
-      //debug_print(lines, count);
-
-      dictionary_t dictionary = dict_create();
-     
-      int *codes = tokenize(lines, count, &dictionary);
-      
-      for (int i = 0; i < count; i++) {
-        printf("%d ", codes[i]);
-      }
-      printf("\n");
-      
+      compile_file(buffer);
       free(buffer);
-      free(codes);    
-      free_split_string(lines, count);
     }
     else
       printf("make sure the file path is correct...\n");
+  } else { /*live interpreter*/
+    printf("Welcome to the CHOP interpreter!\n>\n");
   }
   
   //printf("There is nothing left to do.\n");
   return 0;
+}
+
+void compile_file(char *buffer) {
+  int count = 0;
+  char **lines = split(buffer, DELIMITERS, &count);
+  //printf("%s\n", buffer);
+  debug_print(lines, count);
+
+  dictionary_t dictionary = dict_create();
+     
+  int *codes = encode(lines, &count, &dictionary);
+  
+  for (int i = 0; i < count; i++) {
+    printf("%d ", codes[i]);
+  }
+  printf("\n");
+  //int **cono;
+  //int **cono_t = &cono[0][0];
+  //init_cono(cono, &dictionary);
+
+  free(codes);    
+  free_split_string(lines, count);
 }
 /*reads a file from disk and returns it as a string buffer*/
 char *read_file(char *path) {

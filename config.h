@@ -28,7 +28,14 @@
 #define SYM_LPAREN  "("
 #define SYM_RPAREN  ")"
 #define SYM_LBRACK  "["
-#define SYM_RBRACK  "]"
+#define SYM_RBRACK  "["
+#define SYM_EQUIV   "=="
+#define SYM_GEQUIV  ">="
+#define SYM_LEQUIV  "<="
+#define SYM_PP      "++"
+#define SYM_MM      "--"
+#define SYM_PEQUALS "+="
+#define SYM_MEQUALS "-="
 
 #define KEYWORD_NULL    "NULL"
 #define KEYWORD_VOID    "VOID"
@@ -43,6 +50,7 @@
 #define KEYWORD_WHILE   "WHILE"
 #define KEYWORD_LOOP    "LOOP" //WEND in basic, end of while
 #define KEYWORD_PRINT   "PRINT"
+#define KEYWORD_INPUT   "INPUT"
 #define KEYWORD_i8      "BIT8"
 #define KEYWORD_i16     "BIT16"
 #define KEYWORD_i32     "BIT32"

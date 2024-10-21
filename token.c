@@ -14,21 +14,29 @@ int is_lit(char *str);
 int is_int(char *str);
 int is_throwaway(char *str);
 int classify_token(char *lit);
-
-int *tokenize(char **buffer, int tokc, dictionary_t *dict) {
+/*Given an array of strings (and the amount, "tokc"), */
+/*return an array of integer codes and update the dictionary*/
+int *encode(char **buffer, int *tokc, dictionary_t *dict) {
   
-  int *res = malloc(tokc*sizeof(int));
+  int *res = malloc(*tokc*sizeof(int));
   /*tokenize each string in the buffer*/
-  printf("String\t\tCode\n");
-  for (int i = 0; i < tokc; i++) {
+  //printf("String\t\t\t\tCode\n");
+  int count = *tokc;
+  int sub_delta = 0;
+  for (int i = 0; i < count; i++) {
     int class = classify_token(buffer[i]);
-    int code = -1; 
-    if (class >= 0) 
+    int code = -1;
+    if (class == -1) {
+      sub_delta++;
+    } 
+    else if (class >= 0) {  
       code = dict_push(dict, class, buffer[i]);
-    res[i] = code;
-    printf("%s \t->\t%d \n", buffer[i], code);
+      res[i-sub_delta] = code;
+      //printf("%s \t\t->\t\t%d \n", buffer[i], code);
+    }
    
   }
+  *tokc -= sub_delta;
   return res;
 }
 

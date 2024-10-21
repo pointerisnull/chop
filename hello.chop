@@ -1,0 +1,11 @@
+# This is an example program! #
+# These are comments and will be ignored, should encode to -1 #
+
+BIT8 add (BIT8 x, BIT8 y)
+  RETURN x + y
+
+BEGIN
+  BIT8 result = add(5743, 3942)
+  PRINT "%d\n", result
+
+RETURN 0

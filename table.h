@@ -24,11 +24,13 @@ typedef struct dictionary_t {
   int constantc;
   int literalc;
   int identifierc;
+  
   int keywordmax;
   int symbolmax;
   int constantmax;
   int literalmax;
   int identifiermax;
+  
   table_t keyword_table;
   table_t symbol_table;
   table_t constant_table;

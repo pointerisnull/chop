@@ -87,7 +87,7 @@ dictionary_t dict_create() {
 
   return ret;
 }
-//returns the global index of item found. If not found, return -1
+//returns the local index of item found. If not found, return -1
 int dict_search(dictionary_t dict, int type, void *content) {
 
   switch (type) {
