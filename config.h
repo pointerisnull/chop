@@ -2,12 +2,19 @@
 #define CONFIG_H
 
 #define MAX_PATH 256
+#define MAX_PROMPT 1024
 /*KEYWORD -> SYMBOL -> CONSTANT -> LITERAL -> IDENTIFIER*/
 #define KEYWORD_COUNT 32
 #define SYMBOL_COUNT 32
 #define CONSTANT_COUNT 1024
 #define LITERAL_COUNT 128
 #define IDENTIFIER_COUNT 1024
+
+#define KEYWORD_T     0
+#define SYMBOL_T      1
+#define IDENTIFIER_T  2
+#define CONSTANT_T    3
+#define LITERAL_T     4
 
 #define SYM_NEWLINE "\n"
 #define SYM_COMMA   ","

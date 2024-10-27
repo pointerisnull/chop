@@ -9,7 +9,7 @@
 #include "lexer.h"
 #include "token.h"
 #include "table.h"
-#include "cono.h"
+#include "interp.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -26,6 +26,8 @@ int main(int argc,  char *argv[]) {
     if ((strncmp(argv[1], "-i", 3) == 0) && access(argv[2], F_OK | R_OK) == 0) {
       printf("interpreting %s...\n", argv[2]);
       char *buffer = read_file(argv[2]);
+      dictionary_t dictionary = dict_create();
+      interpret_code(buffer, &dictionary);
       free(buffer);
     }
     /*compile a file*/
@@ -38,9 +40,9 @@ int main(int argc,  char *argv[]) {
     else
       printf("make sure the file path is correct...\n");
   } else { /*live interpreter*/
-    printf("Welcome to the CHOP interpreter!\n>\n");
+    printf("Welcome to the CHOP interpreter!\n>");
+    live_prompt();
   }
-  
   //printf("There is nothing left to do.\n");
   return 0;
 }
@@ -59,9 +61,6 @@ void compile_file(char *buffer) {
     printf("%d ", codes[i]);
   }
   printf("\n");
-  //int **cono;
-  //int **cono_t = &cono[0][0];
-  //init_cono(cono, &dictionary);
 
   free(codes);    
   free_split_string(lines, count);

@@ -4,12 +4,6 @@
 #define INT_TYPE      0
 #define STRING_TYPE   1
 
-#define KEYWORD_T     0
-#define SYMBOL_T      1
-#define IDENTIFIER_T  2
-#define CONSTANT_T    3
-#define LITERAL_T     4
-
 typedef struct table_t {
   int type;
   int size;

@@ -57,30 +57,41 @@ void cono_combo(int **ctable, dictionary_t *dict) {
     ctable[dict_push(dict, SYMBOL_T, SYM_NEWLINE)][i] = NOOP; 
     /*RETURN -> anything = RETURN*/
     ctable[dict_push(dict, KEYWORD_T, KEYWORD_RETURN)][i] = RETURN; 
+    /*PRINT -> anything = PRINT*/
+    ctable[dict_push(dict, KEYWORD_T, KEYWORD_PRINT)][i] = PRINT; 
   }
   /*datatype -> equals = STARTDEF*/
   ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_EQUALS)] = STARTDEF; 
   /*datatype -> \n = ENDDEF*/
-  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_EQUALS)] = ENDDEF; 
+  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_NEWLINE)] = ENDDEF; 
+  /*datatype -> , = ENDDEF*/
+  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_COMMA)] = ENDDEF; 
+  /*datatype -> ) = ENDDEF*/
+  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_RPAREN)] = ENDDEF; 
   /*equals -> \n = ENDDEF*/
   ctable[dict_push(dict, SYMBOL_T, SYM_EQUALS)][dict_push(dict, SYMBOL_T, SYM_NEWLINE)] = ENDDEF; 
   /*datatype -> ( = FUNCDEF*/
-  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_LPAREN)] = ENDDEF; 
+  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_LPAREN)] = FUNCDEF; 
   /*( -> , = PARAM*/
   ctable[dict_push(dict, SYMBOL_T, SYM_LPAREN)][dict_push(dict, SYMBOL_T, SYM_COMMA)] = PARAM; 
-  /*, -> , = PARAM*/
-  ctable[dict_push(dict, SYMBOL_T, SYM_COMMA)][dict_push(dict, SYMBOL_T, SYM_COMMA)] = PARAM; 
-  /*, -> ) = ENDPAREN*/
-  ctable[dict_push(dict, SYMBOL_T, SYM_COMMA)][dict_push(dict, SYMBOL_T, SYM_RPAREN)] = ENDPAREN; 
-  /*( -> ) = ENDPAREN*/
-  ctable[dict_push(dict, SYMBOL_T, SYM_LPAREN)][dict_push(dict, SYMBOL_T, SYM_RPAREN)] = ENDPAREN; 
-  /*) -> \n = NOOP*/
-  ctable[dict_push(dict, SYMBOL_T, SYM_RPAREN)][dict_push(dict, SYMBOL_T, SYM_NEWLINE)] = NOOP; 
+  /*( -> datatype = PARAM (definition)*/
+  ctable[dict_push(dict, SYMBOL_T, SYM_LPAREN)][dict_push(dict, KEYWORD_T, KEYWORD_i8)] = PARAM; 
+  /*, -> datatype = PARAM*/
+  ctable[dict_push(dict, SYMBOL_T, SYM_COMMA)][dict_push(dict, KEYWORD_T, KEYWORD_i8)] = PARAM; 
+  /*, -> ) = PARAMETER (last)*/
+  ctable[dict_push(dict, SYMBOL_T, SYM_COMMA)][dict_push(dict, SYMBOL_T, SYM_RPAREN)] = PARAM; 
+  /*datatype -> ) = ENDPAREN*/
+  //ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_RPAREN)] = ENDPAREN; 
+  /*( -> ) = ONE PARAMETER*/
+  ctable[dict_push(dict, SYMBOL_T, SYM_LPAREN)][dict_push(dict, SYMBOL_T, SYM_RPAREN)] = PARAM; 
+  /*) -> \n = ENDPAREN*/
+  ctable[dict_push(dict, SYMBOL_T, SYM_RPAREN)][dict_push(dict, SYMBOL_T, SYM_NEWLINE)] = ENDPAREN; 
   /*BEGIN -> \n = STARTPROG*/
   ctable[dict_push(dict, KEYWORD_T, KEYWORD_BEGIN)][dict_push(dict, SYMBOL_T, SYM_NEWLINE)] = STARTPROG; 
 }
 
-void init_cono(int **ctable, dictionary_t *dict) {
+int **init_cono(dictionary_t *dict) {
+  int **ctable;
   int size = dict->keywordmax + dict->symbolmax;
   ctable = malloc(sizeof(int *)*size);
   for (int i = 0; i < size; i++)
@@ -92,6 +103,11 @@ void init_cono(int **ctable, dictionary_t *dict) {
 
   cono_combo(ctable, dict);
   
+
+  return ctable;
+}
+
+void print_cono(int **ctable, int size) {
   for (int i = 0; i < size; i++) {
     for (int j = 0; j < size; j++) {
       if (ctable[i][j] == -1)
@@ -103,5 +119,4 @@ void init_cono(int **ctable, dictionary_t *dict) {
     }
    printf("\n");
   }
-
 }

@@ -16,7 +16,8 @@
 
 #include "table.h"
 
-void init_cono(int **ctable, dictionary_t *dict);
-
+int **init_cono(dictionary_t *dict);
+char *getop_str(int **ctable, int co, int no);
+void print_cono(int **ctable, int size);
 
 #endif

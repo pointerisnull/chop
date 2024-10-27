@@ -40,6 +40,20 @@ int *encode(char **buffer, int *tokc, dictionary_t *dict) {
   return res;
 }
 
+int classify_code(int code, dictionary_t *dict) {
+  if (code < dict->keywordmax)
+    return KEYWORD_T;
+  else if (code < dict->keywordmax+dict->symbolmax)
+    return SYMBOL_T;
+  else if (code < dict->keywordmax+dict->symbolmax+dict->constantmax)
+    return CONSTANT_T;
+  else if (code < dict->keywordmax+dict->symbolmax+dict->constantmax+dict->literalmax)
+    return LITERAL_T;
+  else if (code < dict->keywordmax+dict->symbolmax+dict->constantmax+dict->literalmax+dict->identifiermax)
+    return IDENTIFIER_T;
+  else return -1;
+}
+
 int classify_token(char *lit) {
   int len = strlen(lit);
   //first check if literal is throwaway (whitespace, etc)

@@ -55,6 +55,6 @@ static char KEYWORDS[KEYWORD_COUNT][8] = {
 };
 
 int *encode(char **buffer, int *tokc, dictionary_t *dict);
-int classify_token(char *lit);
+int classify_code(int code, dictionary_t *dict);
 
 #endif
