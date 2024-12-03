@@ -15,6 +15,8 @@
 #define IDENTIFIER_T  2
 #define CONSTANT_T    3
 #define LITERAL_T     4
+#define VALUE_T       5
+#define DTYPE_T       6
 
 #define SYM_NEWLINE "\n"
 #define SYM_COMMA   ","

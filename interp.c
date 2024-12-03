@@ -19,15 +19,35 @@ int march_op(dictionary_t *dict, int *codes, int size, int current) {
   return size;
 }
 
-int handle_op(dictionary_t *dict, int *codes, int op) {
+int handle_op(dictionary_t *dict, table_t *memtbl, int *codes, int **cono, int co, int no) {
+  int op = cono[co][no];
   switch (op) {
     case RETURN:
       return EXIT;
+      break;
+    case STARTDEF:
+      //printf("HERE\n");
+      //int res = dict_push(dict, DTYPE_T, &codes[co]);
+      //printf("sdef push: %d\n", res);
+      int li = local_index(dict, codes[co+1]); // identifier index
+      printf("CO: %d, LI: %d, TOKC: %d\n", codes[co+1], li, memtbl->size);
+      table_insert(memtbl, li, "0");
+      return CONTINUE;
+      break;
+    case ENDDEF:
+      
+      break;
+    case PRINT:
+
+      break;
+    case INPUT:
+
+      break;
   }
   return ERR;
 }
 
-int interpret_code(char *buffer, dictionary_t *dict) {
+int interpret_code(char *buffer, dictionary_t *dict, table_t *memtbl) {
   int count = 0;
   char **tokens = split(buffer, DELIMITERS, &count);
   int *codes = encode(tokens, &count, dict);
@@ -53,7 +73,8 @@ int interpret_code(char *buffer, dictionary_t *dict) {
   for (int i = 0; i < count; i++) {
     int co = i;
     int no = march_op(dict, codes, count, i);
-    int handle = handle_op(dict, codes, cono[co][no]);
+    int handle = handle_op(dict, memtbl, codes, cono, codes[co], codes[no]);
+    printf("%d\n", handle);
     if (handle == EXIT) return EXIT;
     //printf("co %d no %d ", co, no);
     //char *op = getop_str(cono, codes[i], codes[no]);
@@ -68,6 +89,7 @@ int interpret_code(char *buffer, dictionary_t *dict) {
 
 void live_prompt() {
   dictionary_t dict = dict_create();
+  table_t memtbl = table_create(dict.identifiermax, INT_TYPE);
   char *line;
   size_t len = 0;
   
@@ -79,11 +101,13 @@ void live_prompt() {
     if (read != -1) {
       // Output the line that was read
       printf("You entered: %s", line);
-      status = interpret_code(line, &dict);
+      status = interpret_code(line, &dict, &memtbl);
     } else {
       // Handle error in reading
       printf("Error reading input.\n");
     }
   }
   free(line);
+  table_print(memtbl);
+  printf("Table printed\n");
 }

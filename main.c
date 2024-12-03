@@ -27,7 +27,8 @@ int main(int argc,  char *argv[]) {
       printf("interpreting %s...\n", argv[2]);
       char *buffer = read_file(argv[2]);
       dictionary_t dictionary = dict_create();
-      interpret_code(buffer, &dictionary);
+      table_t memtbl = table_create(dictionary.identifiermax, INT_TYPE);
+      interpret_code(buffer, &dictionary, &memtbl);
       free(buffer);
     }
     /*compile a file*/

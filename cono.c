@@ -48,7 +48,17 @@ char *getop_str(int **ctable, int co, int no) {
   }
   return "ERR";
 }
-
+/********************************
+*FUNCTION: cono_combo           *
+*PARAMETERS: ctable (cono table)*
+*(dictionary pointer) *dict     *
+*RETURNS: VOID                  *
+*                               *
+* This function initiates cono- *
+*pairs inside of a 2d array     *
+*ctable using dictionary symbols*
+*and keywords.                  *
+********************************/
 void cono_combo(int **ctable, dictionary_t *dict) {
   int size = dict->keywordmax + dict->symbolmax;
 
@@ -62,12 +72,12 @@ void cono_combo(int **ctable, dictionary_t *dict) {
   }
   /*datatype -> equals = STARTDEF*/
   ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_EQUALS)] = STARTDEF; 
-  /*datatype -> \n = ENDDEF*/
-  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_NEWLINE)] = ENDDEF; 
-  /*datatype -> , = ENDDEF*/
-  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_COMMA)] = ENDDEF; 
-  /*datatype -> ) = ENDDEF*/
-  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_RPAREN)] = ENDDEF; 
+  /*datatype -> \n = STARTDEF*/
+  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_NEWLINE)] = STARTDEF; 
+  /*datatype -> , = STARTDEF*/
+  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_COMMA)] = STARTDEF; 
+  /*datatype -> ) = STARTDEF*/
+  ctable[dict_push(dict, KEYWORD_T, KEYWORD_i8)][dict_push(dict, SYMBOL_T, SYM_RPAREN)] = STARTDEF; 
   /*equals -> \n = ENDDEF*/
   ctable[dict_push(dict, SYMBOL_T, SYM_EQUALS)][dict_push(dict, SYMBOL_T, SYM_NEWLINE)] = ENDDEF; 
   /*datatype -> ( = FUNCDEF*/

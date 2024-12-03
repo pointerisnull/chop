@@ -18,6 +18,28 @@ table_t table_create(int size, int type) {
   return ret;
 }
 
+int table_insert(table_t *table, int index, void *content) {
+  if (index > table->tokc)
+    return -1;
+  switch (table->type) {
+    case INT_TYPE:
+      int num = to_int((char*)content);
+      table->content_i[index] = num;
+      break;
+    case STRING_TYPE:
+      table->content_s[table->tokc] = (char *)content;
+      break;
+    default:
+      break;
+  }
+  return 0;
+}
+
+void table_fill(table_t *table, int size, char *val) {
+  for (int i = 0; i < size; i++)
+    table_push(table, val);
+}
+
 void table_push(table_t *table, void *content) {
   switch (table->type) {
     case INT_TYPE:
@@ -77,12 +99,12 @@ dictionary_t dict_create() {
   ret.constantmax = CONSTANT_COUNT;
   ret.literalmax = LITERAL_COUNT;
 
-
   ret.keyword_table = table_create(ret.keywordmax, STRING_TYPE);
   ret.symbol_table = table_create(ret.symbolmax, STRING_TYPE);
   ret.constant_table = table_create(ret.constantmax, INT_TYPE);
   ret.literal_table = table_create(ret.literalmax, STRING_TYPE);
   ret.identifier_table = table_create(ret.identifiermax, STRING_TYPE);
+  ret.identifier_val_table = table_create(ret.identifiermax, INT_TYPE);
   ret.identifier_type_table = table_create(ret.identifiermax, INT_TYPE);
 
   return ret;
@@ -165,7 +187,22 @@ int dict_push(dictionary_t *dict, int type, void *content) {
       dict->identifierc++;
       return code;
     break;
+
   }
+}
+
+int local_index(dictionary_t *dict, int code) {
+  if (code < dict->keywordmax)
+    return code;
+  else if (code < dict->keywordmax+dict->symbolmax)
+    return code - (dict->keywordmax);
+  else if (code < dict->keywordmax+dict->symbolmax+dict->constantmax)
+    return code - (dict->keywordmax+dict->symbolmax);
+  else if (code < dict->keywordmax+dict->symbolmax+dict->constantmax+dict->literalmax)
+    return code - (dict->keywordmax+dict->symbolmax+dict->constantmax);
+  else if (code < dict->keywordmax+dict->symbolmax+dict->constantmax+dict->literalmax+dict->identifiermax)
+    return code - (dict->keywordmax+dict->symbolmax+dict->constantmax+dict->literalmax);
+  else return -1;
 }
 
 int to_int(char *str) {
